@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Normalizacion de datos</title>
+    <link rel="stylesheet" href="~/css/app.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DataNormalizer.styles.css" asp-append-version="true" />
+</head>
+
+
+<body class="bg-blue-50 ">
+    <header>
+        <nav class=" text-white bg-indigo-950 flex border-b-2 p-4">
+            <div class="flex flex-row justify-start">
+
+                <a class="font-bold hover:text-blue-500" asp-area="" asp-controller="Home" asp-action="Index">Data Normalizer</a>
+
+                <div class="flex">
+                    <ul class="flex flex-row ml-8">
+                        <li class="px-4 font-bold hover:text-blue-500">
+                            <a class="" asp-area="" asp-controller="Home" asp-action="NormalizeCity">Ciudades</a>
+                        </li>
+                        <li class="px-4 font-bold hover:text-blue-500">
+                            <a class="" asp-area="" asp-controller="Home" asp-action="NormalizeBirthDate">Fechas</a>
+                        </li>
+                        <li class="px-4 font-bold hover:text-blue-500">
+                            <a class="" asp-area="" asp-controller="Home" asp-action="NormalizePlaces">Lugares</a>
+                        </li>
+    
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+    
+
+    <div class="flex justify-center mx-auto bg-gradient-to-r from-slate-700 to-gray-800 py-16 my-6 rounded-lg w-6/12 shadow-2xl text-white">
+        <main role="main" class="justify-center">
+            @RenderBody()
+        </main>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

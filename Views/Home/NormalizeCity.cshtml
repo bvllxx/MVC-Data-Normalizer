@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Normalizar Ciudades";
+    var index = 1;
+}
+
+<div class="text-center justify-center">
+    <h1 class="text-2xl font-bold pb-6">Normalizar nombres de ciudades</h1>
+
+    <p>A continuacion, seleccione el dataset que desea normalizar</p>
+
+    <div class="flex self-auto border-2 border-gray-600 rounded-md m-6 h-10" >
+        @using (Html.BeginForm("NormalizeBirthDate", "Home", FormMethod.Post,
+        new { enctype = "multipart/form-data", @class = "flex flex-1 justify-between" } ))
+        {
+            <input class="hidden" type="file" name="file" id="file">
+
+            <label class="cursor-pointer text-white p-2" for="file" >Seleccionar Archivo</label>
+            <input class="cursor-pointer px-2 bg-indigo-950 hover:bg-indigo-800 h-auto border-l-2 border-gray-600  rounded-r-md text-white" type="submit" value="Subir archivo">
+        }
+    </div>
+
+    @if (ViewBag.normalizedCities != null && ViewBag.normalizedCities.Count > 0) {
+        <table class="table-auto justify-center mx-auto">
+            <thead>
+                <tr class="border text-start">
+                    <th class="border p-2">Numero de ciudad</th>
+                    <th class="border p-2">Ciudad</th>
+                </tr>
+            </thead>
+            <tbody class="border">
+                @foreach (var ciudad in ViewBag.normalizedCities) {
+                    <tr class="border text-start">
+                        <td class="border p-2">@index</td>
+                        <td class="border p-2">@ciudad</td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    } else {
+        <p class="text-gray-300 text-lg">No hay datos disponibles.</p>
+    }
+</div>
