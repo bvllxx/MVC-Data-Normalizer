@@ -8,6 +8,7 @@ public class HomeController : Controller {
     private readonly IWebHostEnvironment _hostingEnvironment;
     public DataValidator validator = new DataValidator();
     public DataTransformer transformer = new DataTransformer();
+
     public HomeController(IWebHostEnvironment hostingEnvironment){
         _hostingEnvironment = hostingEnvironment;
     }
@@ -20,19 +21,9 @@ public class HomeController : Controller {
     // Carga la vista para normalizar fechas de nacimiento
     public IActionResult NormalizeBirthDate(IFormFile file){
         if (file != null && file.Length > 0){
-            
-            var savingPath = Path.Combine(_hostingEnvironment.WebRootPath, file.FileName);
-
-            using (var stream = new FileStream(savingPath, FileMode.Create)){
-                file.CopyTo(stream);
-            }
-
-            var names = System.IO.File.ReadAllLines(savingPath);
-            System.IO.File.Delete(savingPath);
-
+            string[] text = DataSaver.fileReader(file,_hostingEnvironment);
             var uniqueNames = new HashSet<(string,string,int,bool)>();
-
-            foreach (string line in names){
+            foreach (string line in text){
                 Match match = Regex.Match(line, @"^(.*?)\s*-\s*(.*)$");
                 if (match.Success){
                     string name = match.Groups[1].Value;
@@ -59,23 +50,16 @@ public class HomeController : Controller {
     // Carga las vistas relacionadas con la normalizacion de ciudades
     public IActionResult NormalizeCity(IFormFile file){
         if (file != null && file.Length > 0){
-
-            var savingPath = Path.Combine(_hostingEnvironment.WebRootPath, file.FileName);
-            using (var stream = new FileStream(savingPath, FileMode.Create)){
-                file.CopyTo(stream);
-            }
-
-            var cities = System.IO.File.ReadAllLines(savingPath);
-
+            string[] text = DataSaver.fileReader(file,_hostingEnvironment);
             HashSet<string> normalizedCities = new HashSet<string>();
 
-            foreach (string cityName in cities){
+            foreach (string cityName in text){
                 string normalizedCityName = transformer.normalizeCityName(cityName);
                 normalizedCities.Add(normalizedCityName);
             }
 
             DataSaver.saveCity(normalizedCities);
-            
+
             ViewBag.normalizedCities = normalizedCities;
             ViewBag.Message = "El archivo se ha cargado correctamente.";
 
@@ -87,39 +71,17 @@ public class HomeController : Controller {
     }
 
     // Carga las vistas relacionadas con la normalizacion de ubicaciones geograficas
-    public IActionResult NormalizePlaces(IFormFile uploadedFile){
-        if (uploadedFile != null && uploadedFile.Length > 0){
-
-            var savingPath = Path.Combine(_hostingEnvironment.WebRootPath, uploadedFile.FileName);
-            using (var stream = new FileStream(savingPath, FileMode.Create)){
-                uploadedFile.CopyTo(stream);
+    public IActionResult NormalizePlaces(IFormFile file){
+        var placeSet = new HashSet<(string,string,string,string,string,string,string)>();
+        if (file != null && file.Length > 0){
+            string[] text = DataSaver.fileReader(file,_hostingEnvironment);
+            var formattedText = transformer.SplitGeoreferences(text);
+            foreach (var reader in formattedText){
+                var normalizedAddress = transformer.normalizeAddress(reader.Item2);
+                placeSet.Add((reader.Item1, normalizedAddress[0],normalizedAddress[1],normalizedAddress[2],normalizedAddress[3],reader.Item3,reader.Item4)) ;
             }
-            var readingFile = System.IO.File.ReadAllLines(savingPath);
-            var placeSet = new HashSet<(string,string,string)>();
-
-            var regex = new Regex(@"^(.*?);(.*?);([-.\d]+),\s*([-.\d]+)$");
-            var adressRegex = new Regex(@"^(.*?),\s*(\d+.*?)?,\s*(.*?),\s*(.*)$");
-
-            foreach (var reader in readingFile){
-                var match = regex.Match(reader);
-            
-                if (match.Success){
-                    var placeName = match.Groups[1].Value;
-                    var adress = match.Groups[2].Value;
-                    var matchedAdress = adressRegex.Match(adress);
-
-                    var latitude = match.Groups[3].Value;
-                    var longitude = match.Groups[4].Value;
-
-                    placeSet.Add((placeName,latitude,longitude));
-                }
-            }
-
-            Console.WriteLine(placeSet);
-
             ViewBag.places = placeSet;
-            
-        } else {
+        } else{
             ViewBag.Message = "No se ha seleccionado ningún archivo.";
         }
 

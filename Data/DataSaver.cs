@@ -2,6 +2,7 @@ using DataNormalizer.Models;
 
 public class DataSaver {
 
+
     // Este metodo es el encargado de guardar los datos en la base de datos relacionañ
     public static void SaveToDatabase<TEntity>(IEnumerable<TEntity> entities) where TEntity : class{
         using (var dbContext = new AppDbContext()){
@@ -45,4 +46,17 @@ public class DataSaver {
             SaveToDatabase(formattedFamousList);
         }
     }
+
+    // Este metodo se encarga de leer el contenido de un archivo
+
+    public static string[] fileReader(IFormFile file,IWebHostEnvironment _hostingEnvironment){
+        var savingPath = Path.Combine(_hostingEnvironment.WebRootPath, file.FileName);
+        using (var stream = new FileStream(savingPath, FileMode.Create)){
+            file.CopyTo(stream);
+        }
+        var text = System.IO.File.ReadAllLines(savingPath);
+        return text;
+    }
+
+
 }

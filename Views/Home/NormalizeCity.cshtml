@@ -9,7 +9,7 @@
     <p>A continuacion, seleccione el dataset que desea normalizar</p>
 
     <div class="flex self-auto border-2 border-gray-600 rounded-md m-6 h-10" >
-        @using (Html.BeginForm("NormalizeBirthDate", "Home", FormMethod.Post,
+        @using (Html.BeginForm("NormalizeCity", "Home", FormMethod.Post,
         new { enctype = "multipart/form-data", @class = "flex flex-1 justify-between" } ))
         {
             <input class="hidden" type="file" name="file" id="file">
