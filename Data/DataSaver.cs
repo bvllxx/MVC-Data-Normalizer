@@ -47,6 +47,30 @@ public class DataSaver {
         }
     }
 
+    public static void savePlace(HashSet<(string, string, string, string, string, string, string)> normalizedPlaces){
+        var places = normalizedPlaces.Select(name => new NormalizedPlace { place_name = name.Item1 }).ToList();
+        SaveToDatabase(places);
+    }
+
+    public static void saveAddress(HashSet<(string, string, string, string, string, string, string)> normalizedAddresses){
+        var addresses = normalizedAddresses.Select(name => new NormalizedAddresses 
+        { 
+            street_name = name.Item2,
+            street_number = name.Item3,
+            city_state_prov = name.Item4
+        }).ToList();
+        SaveToDatabase(addresses);
+    }
+
+    public static void saveGeoreference(HashSet<(string, string, string, string, string, string, string)> normalizedGeoreference){
+        var georeferences = normalizedGeoreference.Select(name => new NormalizedGeoreference 
+        { 
+            longitud = name.Item6,
+            latitud = name.Item7,
+        }).ToList();
+        SaveToDatabase(georeferences);
+    }
+
     // Este metodo se encarga de leer el contenido de un archivo
 
     public static string[] fileReader(IFormFile file,IWebHostEnvironment _hostingEnvironment){

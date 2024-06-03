@@ -9,7 +9,7 @@ public class AppDbContext : DbContext {
     public DbSet<FamousModel> fnac_famosos_norm { get; set; }
     public DbSet<UnformattedModel> fnac_famosos { get; set; }
 
-    public DbSet<NormalizedPlace> lugar { get; set; }
+    public DbSet<NormalizedPlace> lugares { get; set; }
     public DbSet<NormalizedAddresses> direcciones { get; set; }
     public DbSet<NormalizedGeoreference> georeferencias { get; set; }
 

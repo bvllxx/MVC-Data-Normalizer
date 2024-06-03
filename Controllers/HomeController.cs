@@ -80,6 +80,9 @@ public class HomeController : Controller {
                 var normalizedAddress = transformer.normalizeAddress(reader.Item2);
                 placeSet.Add((reader.Item1, normalizedAddress[0],normalizedAddress[1],normalizedAddress[2],normalizedAddress[3],reader.Item3,reader.Item4)) ;
             }
+            DataSaver.savePlace(placeSet);
+            DataSaver.saveAddress(placeSet);
+            DataSaver.saveGeoreference(placeSet);
             ViewBag.places = placeSet;
         } else{
             ViewBag.Message = "No se ha seleccionado ningún archivo.";

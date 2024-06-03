@@ -79,6 +79,63 @@ namespace DataNormalizer.Migrations
 
                     b.ToTable("fnac_famosos");
                 });
+
+            modelBuilder.Entity("NormalizedAddresses", b =>
+                {
+                    b.Property<int>("address_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("address_id"));
+
+                    b.Property<string>("city_state_prov")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("street_name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("street_number")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("address_id");
+
+                    b.ToTable("direcciones");
+                });
+
+            modelBuilder.Entity("NormalizedGeoreference", b =>
+                {
+                    b.Property<int>("georeference_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("georeference_id"));
+
+                    b.Property<string>("latitud")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("longitud")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("georeference_id");
+
+                    b.ToTable("georeferencias");
+                });
+
+            modelBuilder.Entity("NormalizedPlace", b =>
+                {
+                    b.Property<int>("place_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("place_id"));
+
+                    b.Property<string>("place_name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("place_id");
+
+                    b.ToTable("lugares");
+                });
 #pragma warning restore 612, 618
         }
     }
