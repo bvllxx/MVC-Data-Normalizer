@@ -20,6 +20,16 @@
     </div>
 
     @if (ViewBag.normalizedCities != null && ViewBag.normalizedCities.Count > 0) {
+        @if (ViewBag.ShowDataAlert)
+        {
+            <p>@ViewBag.Message</p>
+            <a asp-action="DownloadFile" asp-route-fileName="@ViewBag.FileName" class="btn btn-primary">Descargar archivo</a>
+        }
+        else
+        {
+            <p>@ViewBag.Message</p>
+        }
+        
         <table class="table-auto justify-center mx-auto">
             <thead>
                 <tr class="border text-start">

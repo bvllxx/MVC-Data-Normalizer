@@ -18,6 +18,14 @@
     </div>
 
     @if (ViewBag.uniqueNames != null && ViewBag.uniqueNames.Count > 0) {
+        @if (ViewBag.ShowDataAlert) {
+
+            <p>@ViewBag.Message</p>
+            <a asp-action="DownloadFile" asp-route-fileName="@ViewBag.FileName" class="btn btn-primary">Descargar archivo</a>
+
+        } else {
+            <p>@ViewBag.Message</p>
+        }
         <table class="table-auto mx-auto">
             <thead>
                 <th class="border text-start">Nombre</th>
